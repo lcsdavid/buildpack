@@ -8,7 +8,7 @@ LABEL org.label-schema.description="C++ buildpack mainly setup on Clang, CMake a
 
 # Update and upgrade, then install clang, python and conan first
 RUN apk update --force --no-cache && apk upgrade --force --no-cache \
-  && apk add --force --no-cache autoconf clang python3 \
+  && apk add --force --no-cache clang python3 \
   && pip3 install --no-cache-dir --upgrade pip conan
  
 # Set up buildpack user, then setup conan default profile and add bincrafters remote repositories
@@ -20,7 +20,7 @@ RUN conan profile new default --detect --force \
 
 # Resume build tools installation and clean cache
 USER root
-RUN apk add --force --no-cache build-base cmake git make && rm -rf /var/cache/apk/*
+RUN apk add --force --no-cache autoconf automake build-base cmake git make && rm -rf /var/cache/apk/*
 
 # Set CC and C++ to Clang compiler
 RUN ln -sf /usr/bin/clang /usr/bin/cc && ln -sf /usr/bin/clang++ /usr/bin/c++
